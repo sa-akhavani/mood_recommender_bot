@@ -13,4 +13,4 @@ bot.on('text', (msg) => msg.reply.text('Bye behx'));
 
 bot.start();
 
-module.exports = app;
+module.exports = {app,bot};
