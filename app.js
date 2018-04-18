@@ -40,9 +40,8 @@ bot.on(['/getRecom'], msg => {
 
 bot.on(['/searchRecommendation'], msg => {
     bot.on('text', msg => {
-
+        console.log(msg);
     })
 });
-
 
 bot.start();
