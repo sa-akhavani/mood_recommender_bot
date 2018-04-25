@@ -1,13 +1,15 @@
 const TeleBot = require('telebot');
 const mongoose = require("mongoose");
 const moodCreate = require('./moodCreate');
+const config = require('./config');
+
 let controller = require('./controller');
 
 mongoose.connect("mongodb://localhost/itlab");
 mongoose.Promise = global.Promise;
 
 const bot = new TeleBot({
-    token: '583347744:AAGr1XHfoAm0E7OWxiVXEI0nOARmKqwSuhY',
+    token: config.token,
     usePlugins: ['askUser']
 });
 
