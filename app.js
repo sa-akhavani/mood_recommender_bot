@@ -19,23 +19,22 @@ const replyMarkup = bot.keyboard([
 });
 
 bot.on(['/trendList'], msg => {
-   controller.findTags()
-  .then((result) => {
-    let list='';
-    for(var m in result){
-      list += m.tag;
-      list += ' ' + m.count + '\n';
-    }
-    return bot.sendMessage(msg.from.id, 'تگ های محبوب', {
-        list,
-        replyMarkup
-    });
-  })
-  .catch((err) => {
-    return bot.sendMessage(msg.from.id, 'مشکلی پیش آمد، لطفا مجددا گزینه خود را انتخاب کنید.', {
-        replyMarkup
-    });
-  });
+    controller.findTags()
+        .then((result) => {
+            console.log(result);
+            let list = '';
+            for (let m of result)
+                list += m.tag + ' -> ' + m.count + '\n';
+            bot.sendMessage(msg.from.id, 'تگ‌های محبوب');
+            return bot.sendMessage(msg.from.id, list, {
+                replyMarkup
+            });
+        })
+        .catch((err) => {
+            return bot.sendMessage(msg.from.id, 'مشکلی پیش آمد، لطفا مجددا گزینه خود را انتخاب کنید.', {
+                replyMarkup
+            });
+        });
 
 
 

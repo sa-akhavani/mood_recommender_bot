@@ -6,37 +6,38 @@ function getRandomInt(max) {
 
 module.exports = {
   find: (tag) => {
-    return new Promise((resolve,reject) => {
-      Recom.find({tag}).then((recoms) => {
+    return new Promise((resolve, reject) => {
+      Recom.find({
+        tag
+      }).then((recoms) => {
         resolve(recoms[getRandomInt(recoms.length)]);
       }).catch(reject);
     });
   },
   findTags: () => {
-    return new Promise((resolve,reject) => {
-      Recom.aggregate([
-        {
+    return new Promise((resolve, reject) => {
+      Recom.aggregate([{
           $group: {
-            _id:"$tag",
-            count:{
-              $sum:1
+            _id: "$tag",
+            count: {
+              $sum: 1
             }
           }
         },
         {
-          $project:{
+          $project: {
             tag: "$_id",
             count: 1
           }
         },
         {
-          $sort:{
-            count:-1
+          $sort: {
+            count: -1
           }
         }
-      ],function(err, recoms) {
-        if(!err)
-          resolve(recoms.slice(0,5));
+      ], function (err, recoms) {
+        if (!err)
+          resolve(recoms.slice(0, 5));
         else
           reject(err);
       });
