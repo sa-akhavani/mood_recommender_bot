@@ -32,11 +32,14 @@ bot.on(['/newRecom'], msg => {
         ask: 'newRecomTag'
     });
 });
-
+let recoms = {};
 bot.on('ask.newRecomTag', msg => {
     const id = msg.from.id;
-    const name = msg.text;
-    let message = name + '\n';
+    const tag = msg.text;
+    recoms[id] = {
+      tag: tag
+    };
+    let message = tag + '\n';
     message += 'لطفاً توصیه‌ی مورد نظر خود را وارد کنید';
     // Ask Recomm Message
     return bot.sendMessage(id, message, {
@@ -46,10 +49,19 @@ bot.on('ask.newRecomTag', msg => {
 
 bot.on('ask.newRecomMessage', msg => {
     const id = msg.from.id;
-    const name = msg.text;
-    let message = 'با موفقیت انجام شد.';
-    return bot.sendMessage(id, message, {
+    const recom = msg.text;
+    recoms[id].recom = recom;
+    controller.create(recoms[id]).then(()=>{
+      let message = 'با موفقیت انجام شد.';
+      return bot.sendMessage(id, message, {
         replyMarkup
+      });
+    }).catch((error)=>{
+      let message = 'error';
+      console.log(error);
+      return bot.sendMessage(id, message, {
+        replyMarkup
+      });
     });
 });
 
