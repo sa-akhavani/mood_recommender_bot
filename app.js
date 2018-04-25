@@ -75,10 +75,16 @@ bot.on(['/searchRecom'], msg => {
 bot.on('ask.searchRecom', msg => {
     const id = msg.from.id;
     let tag = msg.text;
-    console.log('finding tag: ' + tag);
-    controller.find(tag).then(function (err, result) {});
-    return bot.sendMessage(id, 'با موفقیت انجام شد.', {
+    controller.find(tag).then((result) => {
+      console.log(result);
+      return bot.sendMessage(id, result.tag+'\n'+result.recom, {
         replyMarkup
+      });
+    }).catch((err) => {
+      console.log(err);
+      return bot.sendMessage(id, 'error!', {
+        replyMarkup
+      });
     });
 });
 

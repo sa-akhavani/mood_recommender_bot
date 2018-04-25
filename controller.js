@@ -1,11 +1,15 @@
 const Recom = require('./recommendation');
 
+function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
 module.exports = {
-  find: (tags) => {
-    return Recom.find({
-      tags: {
-        $all: tags
-      }
+  find: (tag) => {
+    return new Promise((resolve,reject) => {
+      Recom.find({tag}).then((recoms) => {
+        resolve(recoms[getRandomInt(recoms.length)]);
+      }).catch(reject);
     });
   },
   create: (recom) => {
