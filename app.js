@@ -13,13 +13,14 @@ const bot = new TeleBot({
     usePlugins: ['askUser']
 });
 
+const replyMarkup = bot.keyboard([
+    [bot.button('/newRecom'), bot.button('/searchRecom')]
+], {
+    resize: true
+});
+
 bot.on(['/start', 'back'], msg => {
-    let replyMarkup = bot.keyboard([
-        [bot.button('/newRecom'), bot.button('/searchRecom')]
-    ], {
-        resize: true
-    });
-    return bot.sendMessage(msg.from.id, 'در حال پردازش', {
+    return bot.sendMessage(msg.from.id, 'گزینه‌ی مورد نظر خود را وارد کنید.', {
         replyMarkup
     });
 });
@@ -43,13 +44,7 @@ bot.on('ask.newRecomTag', msg => {
     });
 });
 
-let recom = {};
 bot.on('ask.newRecomMessage', msg => {
-    let replyMarkup = bot.keyboard([
-        [bot.button('/newRecom'), bot.button('/searchRecom')]
-    ], {
-        resize: true
-    });
     const id = msg.from.id;
     const name = msg.text;
     let message = 'با موفقیت انجام شد.';
@@ -58,10 +53,21 @@ bot.on('ask.newRecomMessage', msg => {
     });
 });
 
-bot.on(['/searchRecommendation'], msg => {
-    bot.on('text', msg => {
-        console.log(msg);
-    })
+bot.on(['/searchRecom'], msg => {
+    const id = msg.from.id;
+    return bot.sendMessage(id, 'حال خود را برای دریافت توصیه وارد کنید!', {
+        ask: 'searchRecom'
+    });
+});
+
+bot.on('ask.searchRecom', msg => {
+    const id = msg.from.id;
+    let tag = msg.text;
+    console.log('finding tag: ' + tag);
+    controller.find(tag).then(function (err, result) {});
+    return bot.sendMessage(id, 'با موفقیت انجام شد.', {
+        replyMarkup
+    });
 });
 
 bot.start();
