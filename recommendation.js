@@ -1,13 +1,11 @@
-let mongoose    = require("mongoose");
+let mongoose = require("mongoose");
 
 const RecomSchema = new mongoose.Schema({
-  recom:{
-    type:String,
-    required:true
+  recom: {
+    type: String,
+    required: true
   },
-  tags:[String]
+  tags: [String]
 });
 
 module.exports = mongoose.model("Recom", RecomSchema);
-
-
