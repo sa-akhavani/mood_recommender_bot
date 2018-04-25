@@ -19,16 +19,26 @@ const replyMarkup = bot.keyboard([
 });
 
 bot.on(['/trendList'], msg => {
-  let trends = controller.findTags();
-  let msg = '';
-  for(var m in trends){
-    msg += m.tag;
-    msg += ' ' + m.count + '\n';
-  }
-  return bot.sendMessage(msg.from.id, 'تگ های محبوب', {
-      msg,
-      replyMarkup
+   controller.findTags()
+  .then((result) => {
+    let list='';
+    for(var m in result){
+      list += m.tag;
+      list += ' ' + m.count + '\n';
+    }
+    return bot.sendMessage(msg.from.id, 'تگ های محبوب', {
+        list,
+        replyMarkup
+    });
+  })
+  .catch((err) => {
+    return bot.sendMessage(msg.from.id, 'مشکلی پیش آمد، لطفا مجددا گزینه خود را انتخاب کنید.', {
+        replyMarkup
+    });
   });
+
+
+
 })
 bot.on(['/start', 'back'], msg => {
     return bot.sendMessage(msg.from.id, 'گزینه‌ی مورد نظر خود را وارد کنید.', {
