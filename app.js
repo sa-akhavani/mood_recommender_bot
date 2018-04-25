@@ -18,8 +18,6 @@ const replyMarkup = bot.keyboard([
     resize: true
 });
 
-controller.findTags().then((r)=>{console.log(r)});
-
 bot.on(['/start', 'back'], msg => {
     return bot.sendMessage(msg.from.id, 'گزینه‌ی مورد نظر خود را وارد کنید.', {
         replyMarkup
