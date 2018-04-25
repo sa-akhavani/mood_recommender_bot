@@ -13,11 +13,23 @@ const bot = new TeleBot({
 });
 
 const replyMarkup = bot.keyboard([
-    [bot.button('/newRecom'), bot.button('/searchRecom')]
+    [bot.button('/newRecom'), bot.button('/searchRecom'), bot.button('/trendList')]
 ], {
     resize: true
 });
 
+bot.on(['/trendList'], msg => {
+  let trends = controller.findTags();
+  let msg = '';
+  for(var m in trends){
+    msg += m.tag;
+    msg += ' ' + m.count + '\n';
+  }
+  return bot.sendMessage(msg.from.id, 'تگ های محبوب', {
+      msg,
+      replyMarkup
+  });
+})
 bot.on(['/start', 'back'], msg => {
     return bot.sendMessage(msg.from.id, 'گزینه‌ی مورد نظر خود را وارد کنید.', {
         replyMarkup
