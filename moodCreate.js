@@ -3,10 +3,10 @@
  */
 const recommend = require("./recommendation.js");
 
-let newMood  =  function (newMoodText, tag) {
+let newMood = function (newMoodText, tag) {
     recommend.create({
         recom: newMoodText.toString(),
-        tags:[tag]
+        tags: [tag]
     }, function (error, insertedObject) {
         if (!error) {
             return;
