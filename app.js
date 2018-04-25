@@ -1,6 +1,5 @@
 const TeleBot = require('telebot');
 const mongoose = require("mongoose");
-const moodCreate = require('./moodCreate');
 const config = require('./config');
 
 let controller = require('./controller');
@@ -18,6 +17,8 @@ const replyMarkup = bot.keyboard([
 ], {
     resize: true
 });
+
+controller.findTags().then((r)=>{console.log(r)});
 
 bot.on(['/start', 'back'], msg => {
     return bot.sendMessage(msg.from.id, 'گزینه‌ی مورد نظر خود را وارد کنید.', {
