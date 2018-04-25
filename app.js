@@ -39,7 +39,7 @@ bot.on('ask.newRecomTag', msg => {
     recoms[id] = {
       tag: tag
     };
-    let message = tag + '\n';
+    let message='';
     message += 'لطفاً توصیه‌ی مورد نظر خود را وارد کنید';
     // Ask Recomm Message
     return bot.sendMessage(id, message, {
@@ -77,7 +77,7 @@ bot.on('ask.searchRecom', msg => {
     let tag = msg.text;
     controller.find(tag).then((result) => {
       console.log(result);
-      return bot.sendMessage(id, result.tag+'\n'+result.recom, {
+      return bot.sendMessage(id,result.recom, {
         replyMarkup
       });
     }).catch((err) => {
