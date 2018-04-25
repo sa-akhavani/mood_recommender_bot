@@ -1,6 +1,5 @@
 const TeleBot = require('telebot');
 const mongoose = require("mongoose");
-const moodCreate = require('./moodCreate');
 const config = require('./config');
 
 let controller = require('./controller');

@@ -12,6 +12,36 @@ module.exports = {
       }).catch(reject);
     });
   },
+  findTags: () => {
+    return new Promise((resolve,reject) => {
+      Recom.aggregate([
+        {
+          $group: {
+            _id:"$tag",
+            count:{
+              $sum:1
+            }
+          }
+        },
+        {
+          $project:{
+            tag: "$_id",
+            count: 1
+          }
+        },
+        {
+          $sort:{
+            count:-1
+          }
+        }
+      ],function(err, recoms) {
+        if(!err)
+          resolve(recoms.slice(0,5));
+        else
+          reject(err);
+      });
+    });
+  },
   create: (recom) => {
     return new Promise((resolve, reject) => {
       Recom.create(recom, (err, newRecom) => {
