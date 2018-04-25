@@ -1,41 +1,59 @@
 const TeleBot = require('telebot');
-const bot = new TeleBot('583347744:AAGr1XHfoAm0E7OWxiVXEI0nOARmKqwSuhY');
 const mongoose = require("mongoose");
+const moodCreate = require('./moodCreate');
+let controller = require('./controller');
+
 mongoose.connect("mongodb://localhost/itlab");
 mongoose.Promise = global.Promise;
 
-let controller = require('./controller');
+const bot = new TeleBot({
+    token: '583347744:AAGr1XHfoAm0E7OWxiVXEI0nOARmKqwSuhY',
+    usePlugins: ['askUser']
+});
 
 bot.on(['/start', 'back'], msg => {
     let replyMarkup = bot.keyboard([
-	[bot.button('/newRecom'), bot.button('/sendRecommendation')]
-    ], {resize: true});
-    return bot.sendMessage(msg.from.id, 'در حال پردازش', {replyMarkup});
-});
-
-bot.on(['/newRecom'], msg => {
-    bot.sendMessage(msg.from.id, 'Enter tag').then(() => {
-      bot.event('/getTag', msg);
+        [bot.button('/newRecom'), bot.button('/searchRecom')]
+    ], {
+        resize: true
+    });
+    return bot.sendMessage(msg.from.id, 'در حال پردازش', {
+        replyMarkup
     });
 });
 
-const moodCreate = require('./moodCreate');
-let recom = {
-}
-bot.on(['/getTag'], msg => {
-  bot.on('text', (text) => {
-    recom.tags = text.text;
-    bot.sendMessage(msg.from.id, 'Enter recom').then(() => {
-      bot.event('/getRecom', msg)
-  });
-  });
+bot.on(['/newRecom'], msg => {
+    const id = msg.from.id;
+    const name = msg.text;
+    return bot.sendMessage(id, 'لطفاً یک تگ وارد کنید', {
+        ask: 'newRecomTag'
+    });
 });
 
-bot.on(['/getRecom'], msg => {
-  bot.on('text', (text) => {
-    recom.recom = text.text;
-    bot.sendMessage(msg.from.id, 'Created');
-  })
+bot.on('ask.newRecomTag', msg => {
+    const id = msg.from.id;
+    const name = msg.text;
+    let message = name + '\n';
+    message += 'لطفاً توصیه‌ی مورد نظر خود را وارد کنید';
+    // Ask Recomm Message
+    return bot.sendMessage(id, message, {
+        ask: 'newRecomMessage'
+    });
+});
+
+let recom = {};
+bot.on('ask.newRecomMessage', msg => {
+    let replyMarkup = bot.keyboard([
+        [bot.button('/newRecom'), bot.button('/searchRecom')]
+    ], {
+        resize: true
+    });
+    const id = msg.from.id;
+    const name = msg.text;
+    let message = 'با موفقیت انجام شد.';
+    return bot.sendMessage(id, message, {
+        replyMarkup
+    });
 });
 
 bot.on(['/searchRecommendation'], msg => {
