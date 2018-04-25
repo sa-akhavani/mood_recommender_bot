@@ -37,9 +37,9 @@ bot.on('ask.newRecomTag', msg => {
     const id = msg.from.id;
     const tag = msg.text;
     recoms[id] = {
-      tag: tag
+        tag: tag
     };
-    let message='';
+    let message = '';
     message += 'لطفاً توصیه‌ی مورد نظر خود را وارد کنید';
     // Ask Recomm Message
     return bot.sendMessage(id, message, {
@@ -51,17 +51,17 @@ bot.on('ask.newRecomMessage', msg => {
     const id = msg.from.id;
     const recom = msg.text;
     recoms[id].recom = recom;
-    controller.create(recoms[id]).then(()=>{
-      let message = 'با موفقیت انجام شد.';
-      return bot.sendMessage(id, message, {
-        replyMarkup
-      });
-    }).catch((error)=>{
-      let message = 'error';
-      console.log(error);
-      return bot.sendMessage(id, message, {
-        replyMarkup
-      });
+    controller.create(recoms[id]).then(() => {
+        let message = 'با موفقیت انجام شد.';
+        return bot.sendMessage(id, message, {
+            replyMarkup
+        });
+    }).catch((error) => {
+        let message = 'error';
+        console.log(error);
+        return bot.sendMessage(id, message, {
+            replyMarkup
+        });
     });
 });
 
@@ -76,15 +76,13 @@ bot.on('ask.searchRecom', msg => {
     const id = msg.from.id;
     let tag = msg.text;
     controller.find(tag).then((result) => {
-      console.log(result);
-      return bot.sendMessage(id,result.recom, {
-        replyMarkup
-      });
+        return bot.sendMessage(id, result.recom, {
+            replyMarkup
+        });
     }).catch((err) => {
-      console.log(err);
-      return bot.sendMessage(id, 'error!', {
-        replyMarkup
-      });
+        bot.sendMessage(id, 'توصیه‌ای برای تگ مورد نظر موجود نیست :( مجدداً دستور مورد نظر خود را از بین دکمه‌ها انتخاب کنید.', {
+            replyMarkup
+        });
     });
 });
 
