@@ -8,12 +8,9 @@ module.exports = {
       }
     });
   },
-  create: (recom, tags) => {
+  create: (recom) => {
     return new Promise((resolve, reject) => {
-      Recom.create({
-        recom,
-        tags
-      }, (err, newRecom) => {
+      Recom.create(recom, (err, newRecom) => {
         if (err)
           reject(err);
         else

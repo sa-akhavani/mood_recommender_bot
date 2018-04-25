@@ -5,7 +5,7 @@ const RecomSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  tags: [String]
+  tag: String
 });
 
 module.exports = mongoose.model("Recom", RecomSchema);
